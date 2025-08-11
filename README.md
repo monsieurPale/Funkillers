@@ -1,4 +1,4 @@
-# Funky Drivers
+# Funkillers (EDR killer drivers)
 
 These drivers expose process termination APIs (e.g., `ZwTerminateProcess`) that can be used to terminate arbitrary processes (e.g. EDR). 
 None of the drivers is flagged are malicious on VirusTotal. All vulnerabilities are "ZeroDays". 
