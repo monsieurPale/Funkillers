@@ -49,7 +49,8 @@ int main(void) {
 	unsigned int res;
 	DWORD lpBytesReturned = 0;
 
-	HANDLE hDevice = CreateFileA("\\\\.\\<DeviceName here>", // change this 					GENERIC_WRITE|GENERIC_READ, 
+	HANDLE hDevice = CreateFileA("\\\\.\\<DeviceName here>", // change this
+					GENERIC_WRITE|GENERIC_READ, 
 					0, 
 					NULL, 
 					OPEN_EXISTING, 
